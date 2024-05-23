@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.product_name %></title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <main>
+        <div class="product-details">
+            <div class="product-img">
+                <img src="/pic/product_<%= product.product_id %>.png" alt="<%= product.product_name %>">
+            </div>
+            <div class="product-info">
+                <h1><%= product.product_name %></h1><br />
+                <p><%= product.description %></p><br />
+                <p><%= product.price %> грн</p><br />
+                <form action="/product/<%= product.product_id %>" method="POST">
+                    <input type="hidden" name="product_id" value="<%= product.product_id %>">
+                    <% if (user) { %>
+                        <input type="hidden" name="userId" value="<%= user.user_id %>">
+                    <% } %>
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit">Додати у кошик</button>
+                </form>
+            </div>
+        </div>
+        <div class="commssec">
+            <h3>Коментарі</h3>
+            <div id="comments">
+                <% if (comments && comments.length > 0) { %>
+                    <% comments.forEach(comment => { %>
+                        <div class="comment">
+                            <p><strong><%= comment.name %>:</strong> <%= comment.comment %></p>
+                            <p><small><%= new Date(comment.date).toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' }) %></small></p>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>Коментарів поки що немає.</p>
+                <% } %>
+            </div>
+            <% if (user) { %>
+                <form id="commentForm" action="/comments-post" method="POST">
+                    <input type="hidden" name="product_id" value="<%= product.product_id %>">
+                    <input type="hidden" name="user_id" value="<%= user.user_id %>">
+                    <textarea name="comment" required></textarea><br />
+                    <button type="submit">Додати коментар</button>
+                </form>
+            <% } else{ %>
+                    <b><p>Зареєструйся або увійди, щоб залишити свій коментар</p></b>
+                <% } %>
+        </div>
+    </main>
+    <footer>
+        <%- include('footer') %>
+    </footer>
+</body>
+</html>

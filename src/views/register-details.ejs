@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Реєстрація</title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <div class="reg1">
+    <h1>Ще пара кроків...</h1>
+    <div class="notcenter">
+        <form action="/register-details/<%= userId %>" method="POST">
+            <b><label for="username">Призвіще та ім'я</label></b><br />
+            <input type="text" name="full_name" placeholder="Full Name" required><br />
+            <b><label for="username">Місто</label></b><br />
+            <input type="text" name="address_city" placeholder="City" required><br />
+            <b><label for="username">Адреса</label></b><br />
+            <input type="text" name="full_address" placeholder="Full Address" required><br />
+            <b><label for="username">Номер телефону</label></b><br />
+            <input type="text" name="phone_num" placeholder="Phone Number" required><br />
+            <button type="submit">Завершити</button>
+        </form>
+    </div>
+    </div>
+    <footer>
+        <%- include('footer') %>
+    </footer>
+</body>
+</html>

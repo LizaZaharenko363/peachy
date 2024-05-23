@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кошик користувача</title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <main>
+        <div class="cart">
+            <h1>Ваш кошик</h1>
+            <% if (userCart.length > 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Назва товару</th>
+                            <th>Ціна</th>
+                            <th>Кількість</th>
+                            <th>Сума</th>
+                            <th>Дія</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% userCart.forEach(item => { %>
+                            <tr>
+                                <td><%= item.product_name %></td>
+                                <td><%= item.price %> грн</td>
+                                <td class="quant">
+                                    <button onclick="updateQuantity('<%= item.cart_item_id %>', -1)">-</button>
+                                    <%= item.quantity %>
+                                    <button onclick="updateQuantity('<%= item.cart_item_id %>', 1)">+</button>
+                                </td>
+                                <td><%= item.price * item.quantity %> грн</td>
+                                <td>
+                                    <form class="delProd" id="deleteForm<%= item.cart_item_id %>" action="/cart-item/<%= item.cart_item_id %>?_method=DELETE" method="POST">
+                                        <button class="delete" id="deleteButton<%= item.cart_item_id %>" type="submit">Видалити</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                <div class="cart-footer">
+                    <h2>Загальна сума: <%= totalPrice %> грн</h2>
+                    <form id="orderForm<%= user.user_id %>" action="/cart/<%= user.user_id %>?_method=DELETE" method="POST">
+                        <button class="delete" id="orderButton<%= user.user_id %>" type="submit">Замовити</button>
+                    </form>
+                </div>
+            <% } else { %>
+                <p>Ваш кошик порожній.</p>
+            <% } %>
+        </div>
+    </main>
+    <footer>
+        <%- include('footer') %>
+    </footer>
+    <script>
+        async function updateQuantity(cartItemId, change) {
+            const response = await fetch(`/upd-cart-item/${cartItemId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cartItemId, quantity: change })
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Failed to update quantity');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[id^="deleteButton"]').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    try {
+                        const cartItemId = button.id.replace('deleteButton', '');
+                        const response = await fetch(`/cart-item/${cartItemId}?_method=DELETE`, {
+                            method: 'POST'
+                        });
+
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Failed to delete item');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            const orderForm = document.getElementById('orderForm<%= user.user_id %>');
+            orderForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                try {
+                    const userId = '<%= user.user_id %>';
+                    const response = await fetch(`/cart/${userId}?_method=DELETE`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        alert('Дякуємо за замовлення');
+                        window.location.reload();
+                    } else {
+                        console.error('Failed to place order');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

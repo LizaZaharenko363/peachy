@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Peachy</title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <main>
+    <div class="categories">
+        <% categories.forEach(category => { %>
+            <div class="category">
+                <h2><a href="/<%= category.category_id %>/products"><%= category.category_name %></a></h2>
+            </div>
+        <% }) %>
+    </div>
+    <% if (user) { %>
+        <div class="welcome">
+            <h2>Привіт, <%= user.name %></h2>      
+            <% if (user.isAdmin) { %>
+                <br /><a class="adm" href="/admin-users">Управління користувачами</a>
+                <br />
+                <br /><a class="adm" href="/admin-comms">Управління коментарями</a>
+            <% } %>        
+        </div>
+    <% } %>
+       
+    <div class="banner"><img src="/pic/banner.png"/></div>
+</main>
+    <footer>
+        <%- include('footer') %>
+    </footer>
+</body>
+</html>

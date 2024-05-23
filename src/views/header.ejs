@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peachy</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="overhead">
+        <div><a href="/about">Доставка та оплата</a></div>
+        <div><a href="/about">Про магазин</a></div>
+    </div>
+    <header class="underline">
+        <div class="left-section">
+            <div class="search">
+                <%- include('search-form') %>
+            </div>
+        </div>
+        <div class="center-section">
+            <div class="logo">
+                <a href="/">
+                    <img src="/pic/logo.png" alt="Logo" />
+                </a>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="user-actions">
+                <div class="logs">
+                    <% if (user) { %>
+                        <form action="/logout?_method=DELETE" method="POST">
+                            <button type="submit">Logout</button>
+                        </form>
+                    <% } else { %>
+                        <button onclick="location.href='/login';">Login</button>
+                    <% } %>
+                </div>
+                <a href="/cart">
+                    <img src="/pic/cart.png" alt="Cart" />
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="lined"></div>
+</body>
+</html>

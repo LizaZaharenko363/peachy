@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= categoryName %></title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <div class="cat">
+        <h1><%= categoryName %></h1> 
+        <br />
+        <label for="sorted">Сортування:</label>
+        <select class="opt" name="sorted" id="sortedSelect">
+            <option value="def">За замовчуванням</option>
+            <option value="inc">За зростанням ціни</option>
+            <option value="dec">За спаданням ціни</option>
+        </select>               
+        <br><br>
+        <div class="products">
+            <% products.forEach(product => { %>
+                <div class="product">
+                    <div class="product-image">
+                    <a href="/product/<%= product.product_id %>"><img src="/pic/product_<%= product.product_id %>.png" alt="<%= product.product_name %>" ></a></div>
+                    <a href="/product/<%= product.product_id %>"><h2><%= product.product_name %></h2></a>
+                    <b><p><%= product.price %> грн</p></b>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <footer>
+        <%- include('footer') %>
+    </footer>
+
+    <script defer>
+        document.getElementById('sortedSelect').addEventListener('change', function() {
+            var selectedValue = this.value;
+            var categoryId = '<%= categoryId %>';
+            var url = '/category/' + categoryId + '/products?sorted=' + selectedValue;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const productsContainer = document.querySelector('.products');
+                    productsContainer.innerHTML = '';
+
+                    data.forEach(product => {
+                        const productElement = document.createElement('div');
+                        productElement.className = 'product';
+                        productElement.innerHTML = `
+                            <div class="product-image">
+                            <a href="/product/${product.product_id}">
+                            <img src="/pic/product_${product.product_id}.png" alt="${product.product_name}" ></div></a>
+                            <a href="/product/${product.product_id}"><h2>${product.product_name}</h2></a>
+                            <b><p>${product.price} грн</p></b>
+                        `;
+
+                        productsContainer.appendChild(productElement);
+                    });
+                })
+                .catch(error => console.error('Помилка:', error));
+        });
+    </script>
+</body>
+</html>

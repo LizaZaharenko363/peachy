@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peachy</title>
+</head>
+<body>
+<header>
+  <%- include('header') %>
+</header>
+<main>
+<div class="srch">
+  <h1>Результати пошуку</h1>
+    <% if (message) { %>
+      <p><%= message %></p>
+    <% } %>
+    <ul>
+      <div class="products">
+        <% products.forEach(product => { %>
+            <div class="product">
+                <div class="product-image">
+                <a href="/product/<%= product.product_id %>"><img src="/pic/product_<%= product.product_id %>.png" alt="<%= product.product_name %>" ></a></div>
+                <a href="/product/<%= product.product_id %>"><h2><%= product.product_name %></h2></a>
+                <b><p><%= product.price %> грн</p></b>
+            </div>
+        <% }) %>
+    </div>
+  </ul>
+</div>
+</main>
+<footer>
+  <%- include('footer') %>
+</footer>
+</body>
+</html>

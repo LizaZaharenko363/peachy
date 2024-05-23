@@ -1,0 +1,10 @@
+@api = http://localhost:3000/category
+
+GET {{api}}
+
+###
+
+GET {{api}}/3/products
+
+###
+GET {{api}}/1

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Users</title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <main>
+    <div class="reg1">
+    <h1>Управління користувачами</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <% if (user.name.trim()!== 'admin') { %>
+                    <tr>
+                        <td><%= user.user_id %></td>
+                        <td><%= user.name %></td>
+                        <td>
+                            <form id="deleteForm<%= user.user_id %>" action="/users/<%= user.user_id %>?_method=DELETE" method="POST">
+                                <button class="deleteus" id="deleteButton<%= user.user_id %>" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% } %>
+            <% }) %>
+        </tbody>
+    </table>
+    </div>
+</main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[id^="deleteButton"]').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    try {
+                        const userId = button.id.replace('deleteButton', '');
+                        
+                        const response = await fetch(`/users/${userId}?_method=DELETE`, {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Failed to delete user');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

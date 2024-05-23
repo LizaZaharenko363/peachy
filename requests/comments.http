@@ -1,0 +1,23 @@
+@api = http://localhost:3000/comments
+
+
+GET {{api}}
+
+###
+GET {{api}}/3
+
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "comment":"My comment here",
+    "product_id":3,
+    "user_id":1004
+}
+
+
+###
+
+DELETE {{api}}/3
+

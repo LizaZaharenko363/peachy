@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вхід</title>
+</head>
+<body>
+    <header>
+        <%- include('header') %>
+    </header>
+    <div class="registrate">
+        <div class="log">
+            <h1>Вхід до особистого кабінету</h1><br />
+            <% if (messages.error) { %>
+                <div><%= messages.error %></div>
+            <% } %>
+            <form action="/login" method="POST">
+                <b><label for="username">Логін</label></b><br />
+                <input type="text" name="username" placeholder="Username" required><br />
+                <b><label for="username">Пароль</label></b><br />
+                <input type="password" name="password" placeholder="Password" required><br />
+                <button type="submit">Увійти</button>
+            </form>
+        </div>
+        <div class="reg">
+            <h1>Привіт!</h1><br />
+            <p>Вперше на сайті?<br />Створи власний акаунт</p>
+            <img src="/pic/peach.png" /><br />
+            <b><a href="/register">Зареєструватись</a></b>
+        </div>
+    </div>
+
+   
+    <footer>
+        <%- include('footer') %>
+    </footer>
+</body>
+</html>
